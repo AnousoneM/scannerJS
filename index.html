@@ -1,56 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>QuaggaJS ScanCODE</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
     <style>
-        #camera video {
-            width: 100%;
+        #camera video{
+            width:100%;
             max-width: 640px;
         }
     </style>
 </head>
 
 <body>
-    <div id="camera" style="width:100%"></div>
-    <script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
-    <script>
-        const quaggaConf = {
-            inputStream: {
-                target: document.querySelector("#camera"),
-                type: "LiveStream",
-                constraints: {
-                    width: { min: 640 },
-                    height: { min: 480 },
-                    facingMode: "environment",
-                    aspectRatio: { min: 1, max: 2 }
-                }
-            },
-            decoder: {
-                readers: [{
-                    format: "ean_reader",
-                    config: {
-                        supplements: [
-                            'ean_13_reader'
-                        ]
-                    }
-                }]
-            },
-        }
-
-        Quagga.init(quaggaConf, function (err) {
-            if (err) {
-                return console.log(err);
+<div id="camera" style="width:100%"></div>
+<script src="https://cdn.jsdelivr.net/npm/@ericblade/quagga2/dist/quagga.min.js"></script>
+<script>
+    const quaggaConf = {
+        inputStream: {
+            target: document.querySelector("#camera"),
+            type: "LiveStream",
+            constraints: {
+                width: { min: 640 },
+                height: { min: 480 },
+                facingMode: "environment",
+                aspectRatio: { min: 1, max: 2 }
             }
-            Quagga.start();
-        });
+        },
+        decoder: {
+            readers: ['ean_reader']
+        },
+    }
 
-        Quagga.onDetected(function (result) {
-            alert("Detected barcode: " + result.codeResult.code);
-        });
-    </script>
+    Quagga.init(quaggaConf, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+        Quagga.start();
+    });
+
+    Quagga.onDetected(function (result) {
+        alert("Detected barcode: " + result.codeResult.code);
+    });
+</script>
 </body>
-
 </html>
